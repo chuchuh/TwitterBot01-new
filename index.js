@@ -1,4 +1,5 @@
-import TwitterApi  from "twitter-api-v2";
+import express from "express";
+import { TwitterApi } from "twitter-api-v2";
 import process from "process";
 
 
