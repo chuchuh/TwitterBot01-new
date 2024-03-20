@@ -19,8 +19,19 @@ const client = new TwitterApi({
 
 client.readWrite;
 
+const app = express();
+
 const greet = async () => {
   await client.v2.tweet("Hello World");
 };
 
-greet();
+app.get("/", (req, res) => {
+    try{
+        greet();
+    } catch(err){
+        console.log(err);
+    }
+    res.send('get');
+});
+
+
