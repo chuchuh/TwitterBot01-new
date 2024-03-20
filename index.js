@@ -22,7 +22,7 @@ client.readWrite;
 const app = express();
 
 const greet = async () => {
-  await client.v2.tweet("Hello World");
+  await client.v2.tweet("Hello World" + new Date().toISOString());
 };
 
 app.get("/", (req, res) => {
