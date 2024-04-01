@@ -57,9 +57,18 @@ const greet = async () => {
     });
 };
 
-app.get("/", (req, res) => {
+app.get("/tweet", (req, res) => {
     try{
         greet();
+    } catch(err){
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/", (req, res) => {
+    try{
+        console.log("ログ定期実行")
     } catch(err){
         console.log(err);
     }
