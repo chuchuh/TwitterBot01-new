@@ -35,14 +35,17 @@ const greet = async () => {
         },
         max: 10,
       });
+      var random = Math.floor( Math.random() * 32 );
       pool.query(
-        'SELECT * FROM public.newtable'
+        'SELECT * FROM public.newtable WHERE number = ' + random
     ).then(result => {
         // 結果データの表示
         if (result.rows) {
-            result.rows.forEach((row) => {
-                console.log(row);
-            });
+            // result.rows.forEach((row) => {
+            //     if(row.number)
+            //     console.log(row);
+            // });
+            client.v2.tweet(result.rows[0].url);
         }
     })
     .catch(err => {
@@ -52,7 +55,6 @@ const greet = async () => {
         console.log('切断');
         pool.end();
     });
-  //await client.v2.tweet();
 };
 
 app.get("/", (req, res) => {
