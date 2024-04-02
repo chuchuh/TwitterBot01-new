@@ -35,26 +35,14 @@ const greet = async () => {
         },
         max: 10,
       });
-      var random = Math.floor( Math.random() * 41 );
-      pool.query(
-        'SELECT * FROM public.newtable WHERE number = ' + random
-    ).then(result => {
-        // 結果データの表示
-        if (result.rows) {
-            // result.rows.forEach((row) => {
-            //     if(row.number)
-            //     console.log(row);
-            // });
-            client.v2.tweet(result.rows[0].url);
+      var count = await pool.query('SELECT count(*) FROM public.newtable');
+      if(count){
+        var result = await pool.query('SELECT * FROM public.newtable WHERE number = ' + Math.floor(Math.random() * (count + 1)));
+        if(result.rows){
+            await client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
         }
-    })
-    .catch(err => {
-        console.log('err: ', err);
-    })
-    .then(() => {
-        console.log('切断');
-        pool.end();
-    });
+      }
+      pool.end();
 };
 
 app.get("/tweet", (req, res) => {
