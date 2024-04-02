@@ -35,7 +35,7 @@ const greet = async () => {
         },
         max: 10,
       });
-      var random = Math.floor( Math.random() * 32 );
+      var random = Math.floor( Math.random() * 41 );
       pool.query(
         'SELECT * FROM public.newtable WHERE number = ' + random
     ).then(result => {
