@@ -80,7 +80,6 @@ const greet = async () => {
     })    
     .then(() => {
         console.log('切断2');
-        pool.end();
     });    
 };
 
