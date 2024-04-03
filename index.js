@@ -36,8 +36,11 @@ const greet = async () => {
         max: 10,
       });
       var count = await pool.query('SELECT count(*) FROM public.newtable');
+      console.log("count: " + count);
       if(count){
-        var result = await pool.query('SELECT * FROM public.newtable WHERE number = ' + Math.floor(Math.random() * (count + 1)));
+        var number = Math.floor(Math.random() * (count + 1));
+        console.log("number: " + number);
+        var result = await pool.query('SELECT * FROM public.newtable WHERE number = ' + number);
         if(result.rows){
             await client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
         }
