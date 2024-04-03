@@ -42,7 +42,7 @@ const greet = async () => {
     ).then(result => {
         // 結果データの表示
         if (result.rows) {
-            var count = result.rows.count;
+            var count = result.rows.length;
             console.log("かうんと" + count);
 
             var random = Math.floor(Math.random() * count);
