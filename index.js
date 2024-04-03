@@ -60,8 +60,10 @@ const greet = async () => {
     });    
 
     console.log("らんだむ2" + random);
+    var sql = 'SELECT * FROM public.newtable WHERE number = ' + random;
+    console.log("SQL " + sql);
     pool.query(
-        'SELECT * FROM public.newtable WHERE number = ' + random
+        sql
     ).then(result => {
         // 結果データの表示
         console.log("う");
