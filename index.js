@@ -51,6 +51,7 @@ const greet = async () => {
                 'SELECT * FROM public.newtable WHERE number = ' + random.toString()
             ).then(result => {
                 // 結果データの表示
+                console.log("う");
                 if (result.rows) {
                     // result.rows.forEach((row) => {
                     //     if(row.number)
