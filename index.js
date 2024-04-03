@@ -56,7 +56,9 @@ const greet = async () => {
                     //     if(row.number)
                     //     console.log(row);
                     // });
+                    console.log("あ");
                     client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
+                    console.log("い");
                 }
             })
             .catch(err => {
