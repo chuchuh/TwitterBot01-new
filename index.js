@@ -35,18 +35,40 @@ const greet = async () => {
         },
         max: 10,
       });
-      var result = await pool.query('SELECT * FROM public.newtable');
-      var count = result.rows.count;
-      console.log("count: " + count);
-      if(count){
-        var number = Math.floor(Math.random() * (count + 1));
-        console.log("number: " + number);
-        var result = await pool.query('SELECT * FROM public.newtable WHERE number = ' + number);
-        if(result.rows){
-            await client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
+         
+      
+      pool.query(
+        'SELECT * FROM public.newtable WHERE number = ' + random
+    ).then(result => {
+        // 結果データの表示
+        if (result.rows) {
+            var count = result.rows.count;
+            var random = Math.floor(Math.random() * count );
+        
+            pool.query(
+                'SELECT * FROM public.newtable WHERE number = ' + random
+            ).then(result => {
+                // 結果データの表示
+                if (result.rows) {
+                    // result.rows.forEach((row) => {
+                    //     if(row.number)
+                    //     console.log(row);
+                    // });
+                    client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
+                }
+            })
+            .catch(err => {
+                console.log('err: ', err);
+            })
         }
-      }
-      pool.end();
+    })
+    .catch(err => {
+        console.log('err: ', err);
+    })
+    .then(() => {
+        console.log('切断');
+        pool.end();
+    });    
 };
 
 app.get("/tweet", (req, res) => {
