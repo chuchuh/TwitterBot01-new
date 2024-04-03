@@ -35,7 +35,8 @@ const greet = async () => {
         },
         max: 10,
       });
-         
+
+    var random = 1000;
       
       pool.query(
         'SELECT * FROM public.newtable'
@@ -45,33 +46,40 @@ const greet = async () => {
             var count = result.rows.length;
             console.log("かうんと" + count);
 
-            var random = Math.floor(Math.random() * count);
-            console.log("らんだむ" + random);
-            pool.query(
-                'SELECT * FROM public.newtable WHERE number = ' + random.toString()
-            ).then(result => {
-                // 結果データの表示
-                console.log("う");
-                if (result.rows) {
-                    // result.rows.forEach((row) => {
-                    //     if(row.number)
-                    //     console.log(row);
-                    // });
-                    console.log("あ");
-                    client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
-                    console.log("い");
-                }
-            })
-            .catch(err => {
-                console.log('err: ', err);
-            })
+            random = Math.floor(Math.random() * count);
+            console.log("らんだむ1" + random);
+            
         }
     })
     .catch(err => {
         console.log('err: ', err);
     })
     .then(() => {
-        console.log('切断');
+        console.log('切断1');
+        pool.end();
+    });    
+
+    console.log("らんだむ2" + random);
+    pool.query(
+        'SELECT * FROM public.newtable WHERE number = ' + random
+    ).then(result => {
+        // 結果データの表示
+        console.log("う");
+        if (result.rows) {
+            // result.rows.forEach((row) => {
+            //     if(row.number)
+            //     console.log(row);
+            // });
+            console.log("あ");
+            client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
+            console.log("い");
+        }
+    })
+    .catch(err => {
+        console.log('err: ', err);
+    })    
+    .then(() => {
+        console.log('切断2');
         pool.end();
     });    
 };
