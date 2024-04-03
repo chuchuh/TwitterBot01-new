@@ -55,12 +55,9 @@ const greet = async () => {
         console.log('err: ', err);
     })
     .then(() => {
-        console.log('切断1');
-        pool.end();
-    });    
+        console.log('お');
 
-    console.log("らんだむ2" + random);
-    var sql = 'SELECT * FROM public.newtable WHERE number = ' + random;
+        var sql = 'SELECT * FROM public.newtable WHERE number = ' + random;
     console.log("SQL " + sql);
     pool.query(
         sql
@@ -82,7 +79,10 @@ const greet = async () => {
     })    
     .then(() => {
         console.log('切断2');
+        pool.end();
     });    
+    });    
+    
 };
 
 app.get("/tweet", (req, res) => {
