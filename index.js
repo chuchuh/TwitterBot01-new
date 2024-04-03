@@ -35,7 +35,7 @@ const greet = async () => {
         },
         max: 10,
       });
-      var count = await pool.query('SELECT count(*) FROM public.newtable')[0].count;
+      var count = await pool.query('SELECT count(*) FROM public.newtable')[0];
       console.log("count: " + count);
       if(count){
         var number = Math.floor(Math.random() * (count + 1));
