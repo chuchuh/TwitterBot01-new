@@ -43,8 +43,10 @@ const greet = async () => {
         // 結果データの表示
         if (result.rows) {
             var count = result.rows.count;
+            console.log("かうんと" + count);
+
             var random = Math.floor(Math.random() * count);
-        
+            console.log("らんだむ" + random);
             pool.query(
                 'SELECT * FROM public.newtable WHERE number = ' + random.toString()
             ).then(result => {
