@@ -38,7 +38,7 @@ const greet = async () => {
          
       
       pool.query(
-        'SELECT * FROM public.newtable WHERE number = ' + random
+        'SELECT * FROM public.newtable'
     ).then(result => {
         // 結果データの表示
         if (result.rows) {
