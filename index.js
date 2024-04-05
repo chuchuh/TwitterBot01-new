@@ -40,7 +40,7 @@ const greet = async () => {
     ).then(result => {
         if (result.rows) {
             var count = result.rows.length;
-            random = Math.floor(Math.random() * count);
+            random = Math.floor(Math.random() * count) + 1;
         }
     })
         .catch(err => {
