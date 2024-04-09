@@ -44,13 +44,15 @@ const greet = async () => {
         resp.on('end', () => {
             var body = JSON.parse(data)
             console.log(body); 
-            if(body.length != 0){
-                var text = "【" + body[0].percentage +"%オフ" + "】"
-                var url = body[0].url;
-                var title = body[0].title;
-                client.v2.tweet(text + " " + url + " " +title + " #セール" + " #Amazon");
+            if(body.length = 0){
+                return false;
             }
-
+            var random = Math.floor( Math.random() * (body.length + 1));
+            var text = "【" + body[random].percentage +"%オフ" + "】"
+            var url = body[random].url;
+            var title = body[random].title;
+            client.v2.tweet(text + " " + url + " " +title + " #セール" + " #Amazon");
+            return true;
         }); 
     
     }).on("error", (err) => { 
@@ -97,7 +99,10 @@ const greet = async () => {
 
 app.get("/tweet", (req, res) => {
     try {
-        greet();
+        var result = false;
+        while(!result){
+            result = greet();
+        }
     } catch (err) {
         console.log(err);
     }
