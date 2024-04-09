@@ -41,8 +41,16 @@ const greet = async () => {
         }); 
     
         // The whole response has been received. Print out the result. 
-        resp.on('end', () => { 
-            console.log(JSON.parse(data)); 
+        resp.on('end', () => {
+            var body = JSON.parse(data)
+            console.log(body); 
+            if(body.length != 0){
+                var text = "【" + body[0].percentage +"%オフ" + "】"
+                var url = body[0].url;
+                var title = body[0].title;
+                client.v2.tweet(text + " " + url + " " +title + " #セール" + " #Amazon");
+            }
+
         }); 
     
     }).on("error", (err) => { 
