@@ -46,7 +46,7 @@ const greet = async () => {
             console.log(body); 
             console.log(body.length);
             if(body.length == 0){
-                return false;
+                greet();
             }
             var random = Math.floor(Math.random() * (body.length));
             console.log(random);
@@ -102,11 +102,7 @@ const greet = async () => {
 
 app.get("/tweet", (req, res) => {
     try {
-        var result = false;
-        while(!result){
-            result = greet();
-            console.log("りざると" + result);
-        }
+        greet();
     } catch (err) {
         console.log(err);
     }
