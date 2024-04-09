@@ -33,7 +33,7 @@ const greet = async () => {
     //     },
     //     max: 10,
     // });
-    https.get('https://amazon-explorer.onrender.com/search', (response) =>{
+    https.get('https://amazon-explorer.onrender.com/search', (resp) =>{
         let data = ''; 
         // A chunk of data has been received. 
         resp.on('data', (chunk) => { 
