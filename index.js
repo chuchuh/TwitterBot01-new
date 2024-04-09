@@ -59,6 +59,7 @@ const greet = async () => {
     
     }).on("error", (err) => { 
         console.log("Error: " + err.message); 
+        return false;
     })
 
 
@@ -104,6 +105,7 @@ app.get("/tweet", (req, res) => {
         var result = false;
         while(!result){
             result = greet();
+            console.log("りざると" + result);
         }
     } catch (err) {
         console.log(err);
