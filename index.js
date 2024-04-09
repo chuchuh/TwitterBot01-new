@@ -44,10 +44,10 @@ const greet = async () => {
         resp.on('end', () => {
             var body = JSON.parse(data)
             console.log(body); 
-            if(body.length = 0){
+            if(body.length == 0){
                 return false;
             }
-            var random = Math.floor( Math.random() * (body.length + 1));
+            var random = Math.floor(Math.random() * (body.length + 1));
             var text = "【" + body[random].percentage +"%オフ" + "】"
             var url = body[random].url;
             var title = body[random].title;
