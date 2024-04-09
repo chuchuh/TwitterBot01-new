@@ -2,6 +2,7 @@ import express from "express";
 import { TwitterApi } from "twitter-api-v2";
 import process from "process";
 import pg from 'pg';
+import https from 'https';
 
 // consumer keys - api key
 const appKey = process.env.TWITTER_API_KEY;
@@ -32,17 +33,21 @@ const greet = async () => {
     //     },
     //     max: 10,
     // });
-    var options = {
-        url: 'https://amazon-explorer.onrender.com/search',
-        method: 'GET',
-    }
-    request(options, function (error, response, body) {
-        var bodyObject = JSON.parse(body)
-        console.log(bodyObject)
-        // client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
-    });
-
-
+    https.get('https://amazon-explorer.onrender.com/search', (response) =>{
+        let data = ''; 
+        // A chunk of data has been received. 
+        resp.on('data', (chunk) => { 
+            data += chunk; 
+        }); 
+    
+        // The whole response has been received. Print out the result. 
+        resp.on('end', () => { 
+            console.log(JSON.parse(data)); 
+        }); 
+    
+    }).on("error", (err) => { 
+        console.log("Error: " + err.message); 
+    })
 
 
     // var random = 1000;
