@@ -48,7 +48,7 @@ const greet = async () => {
             if(body.length == 0){
                 return false;
             }
-            var random = Math.floor(Math.random() * (body.length + 1));
+            var random = Math.floor(Math.random() * (body.length));
             console.log(random);
             var text = "【" + body[random].percentage +"%オフ" + "】"
             var url = body[random].url;
