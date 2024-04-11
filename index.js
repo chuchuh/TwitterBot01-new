@@ -23,16 +23,7 @@ client.readWrite;
 const app = express();
 
 const greet = async () => {
-    // const pool = new pg.Pool({
-    //     database: process.env.DATABASE,
-    //     user: process.env.DATABASE_USER,
-    //     password: process.env.DATABASE_PASSWORD,
-    //     host: process.env.DATABASE_HOST,
-    //     ssl: {
-    //         rejectUnauthorized: false,
-    //     },
-    //     max: 10,
-    // });
+
     https.get(process.env.AMAZON_API_URL, (resp) =>{
         let data = ''; 
         // A chunk of data has been received. 
@@ -62,43 +53,61 @@ const greet = async () => {
         return false;
     })
 
-
-    // var random = 1000;
-
-    // pool.query(
-    //     'SELECT * FROM public.newtable'
-    // ).then(result => {
-    //     if (result.rows) {
-    //         var count = result.rows.length;
-    //         random = Math.floor(Math.random() * count) + 1;
-    //     }
-    // })
-    //     .catch(err => {
-    //         console.log('err: ', err);
-    //     })
-    //     .then(() => {
-    //         var sql = 'SELECT * FROM public.newtable WHERE number = ' + random;
-    //         pool.query(
-    //             sql
-    //         ).then(result => {
-    //             if (result.rows) {
-    //                 // result.rows.forEach((row) => {
-    //                 //     if(row.number)
-    //                 //     console.log(row);
-    //                 // });
-    //                 client.v2.tweet(result.rows[0].url + " #PR" + " #Amazon");
-    //             }
-    //         })
-    //             .catch(err => {
-    //                 console.log('err: ', err);
-    //             })
-    //             .then(() => {
-    //                 console.log('切断');
-    //                 pool.end();
-    //             });
-    //     });
-
 };
+
+const select = async () => {
+    const pool = new pg.Pool({
+        database: process.env.DATABASE,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        host: process.env.DATABASE_HOST,
+        ssl: {
+            rejectUnauthorized: false,
+        },
+        max: 10,
+    });
+
+    var random = 1000;
+
+    pool.query(
+        'SELECT * FROM public.amazon'
+    ).then(result => {
+        if (result.rows) {
+            var count = result.rows.length;
+            random = Math.floor(Math.random() * count) + 1;
+        }
+    })
+        .catch(err => {
+            console.log('err: ', err);
+        })
+        .then(() => {
+            var sql = 'SELECT * FROM public.amazon WHERE number = ' + random;
+            pool.query(
+                sql
+            ).then(result => {
+                if (result.rows) {
+                    client.v2.tweet(result.rows[0].content + " #PR #Amazon");
+                }
+            })
+                .catch(err => {
+                    console.log('err: ', err);
+                })
+                .then(() => {
+                    console.log('切断');
+                    pool.end();
+                });
+        });
+}
+
+
+app.get("/db", (req, res) => {
+    try {
+        select();
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
 
 app.get("/tweet", (req, res) => {
     try {
