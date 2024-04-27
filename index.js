@@ -17,21 +17,15 @@ const client = new TwitterApi({
     accessToken,
     accessSecret,
 });
-
 client.readWrite;
-
 const app = express();
 
 const greet = async () => {
-
     https.get(process.env.AMAZON_API_URL, (resp) =>{
         let data = ''; 
-        // A chunk of data has been received. 
         resp.on('data', (chunk) => { 
             data += chunk; 
         }); 
-    
-        // The whole response has been received. Print out the result. 
         resp.on('end', () => {
             var body = JSON.parse(data)
             console.log(body); 
@@ -44,7 +38,7 @@ const greet = async () => {
             var text = "【" + body[random].percentage +"%オフ" + "】"
             var url = body[random].url;
             var title = body[random].title.substring(0,88);
-            client.v2.tweet(text + " " + url + " " +title + " #セール #Amazon" );
+            client.v2.tweet(text + " " + url + " " +title + " #セール #Amazon #ad #PR" );
             return true;
         }); 
     
