@@ -3,6 +3,7 @@ import { TwitterApi } from "twitter-api-v2";
 import process from "process";
 import pg from 'pg';
 import https from 'https';
+import axios from "axios";
 
 // consumer keys - api key
 const appKey = process.env.TWITTER_API_KEY;
