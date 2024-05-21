@@ -20,25 +20,16 @@ const client = new TwitterApi({
 client.readWrite;
 const app = express();
 
-const greet = async () => {
-    https.get(process.env.AMAZON_API_URL, (resp) =>{
+const execute = async (url) => {
+    https.get(url, (resp) =>{
         let data = ''; 
         resp.on('data', (chunk) => { 
             data += chunk; 
         }); 
         resp.on('end', () => {
             var body = JSON.parse(data)
-            console.log(body); 
-            console.log(body.length);
-            if(body.length == 0){
-                greet();
-            }
-            var random = Math.floor(Math.random() * (body.length));
-            console.log(random);
-            var text = "【" + body[random].percentage +"%オフ" + "】"
-            var url = body[random].url;
-            var title = body[random].title.substring(0,88);
-            client.v2.tweet(text + " " + url + " " +title + " #セール #Amazon #ad #PR" );
+            var tweetText = body.tweetText;
+            client.v2.tweet(tweetText);
             return true;
         }); 
     
@@ -46,140 +37,128 @@ const greet = async () => {
         console.log("Error: " + err.message); 
         return false;
     })
-
 };
 
-const select = async () => {
-    const pool = new pg.Pool({
-        database: process.env.DATABASE,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        host: process.env.DATABASE_HOST,
-        ssl: {
-            rejectUnauthorized: false,
-        },
-        max: 10,
-    });
+// const select = async () => {
+//     const pool = new pg.Pool({
+//         database: process.env.DATABASE,
+//         user: process.env.DATABASE_USER,
+//         password: process.env.DATABASE_PASSWORD,
+//         host: process.env.DATABASE_HOST,
+//         ssl: {
+//             rejectUnauthorized: false,
+//         },
+//         max: 10,
+//     });
 
-    var random = 1000;
+//     var random = 1000;
 
-    pool.query(
-        'SELECT * FROM public.amazon'
-    ).then(result => {
-        if (result.rows) {
-            var count = result.rows.length;
-            random = Math.floor(Math.random() * count) + 1;
-        }
-    })
-        .catch(err => {
-            console.log('err: ', err);
-        })
-        .then(() => {
-            var sql = 'SELECT * FROM public.amazon WHERE number = ' + random;
-            pool.query(
-                sql
-            ).then(result => {
-                if (result.rows) {
-                    client.v2.tweet(result.rows[0].content + " #PR #Amazon");
-                }
-            })
-                .catch(err => {
-                    console.log('err: ', err);
-                })
-                .then(() => {
-                    console.log('切断');
-                    pool.end();
-                });
-        });
-}
+//     pool.query(
+//         'SELECT * FROM public.amazon'
+//     ).then(result => {
+//         if (result.rows) {
+//             var count = result.rows.length;
+//             random = Math.floor(Math.random() * count) + 1;
+//         }
+//     })
+//         .catch(err => {
+//             console.log('err: ', err);
+//         })
+//         .then(() => {
+//             var sql = 'SELECT * FROM public.amazon WHERE number = ' + random;
+//             pool.query(
+//                 sql
+//             ).then(result => {
+//                 if (result.rows) {
+//                     client.v2.tweet(result.rows[0].content + " #PR #Amazon");
+//                 }
+//             })
+//                 .catch(err => {
+//                     console.log('err: ', err);
+//                 })
+//                 .then(() => {
+//                     console.log('切断');
+//                     pool.end();
+//                 });
+//         });
+// }
 
 
-app.get("/db", (req, res) => {
+// app.get("/db", (req, res) => {
+//     try {
+//         select();
+//     } catch (err) {
+//         console.log(err);
+//     }
+//     res.send('get');
+// });
+
+app.get("/tiktok4500", (req, res) => {
     try {
-        select();
+        execute(process.env.TIKTOK_4500_API_URL);
     } catch (err) {
         console.log(err);
     }
     res.send('get');
 });
 
-app.get("/tiktok", (req, res) => {
+app.get("/tiktok5000", (req, res) => {
     try {
-        var text = "【期間限定】今なら誰でも+" + process.env.TIKTOK_AMOUNT + "円ゲットできるよ\n招待URL: " + process.env.TIKTOK_URL + "\nルールを守らないとお金がもらえないので必ず↓を見て登録してね"
-        var random = Math.floor(Math.random() * (30));
-        const emojis = [
-            "😀",
-            "😆",
-            "🤣",
-            "😉",
-            "🥰",
-            "😍",
-            "🤩",
-            "😘",
-            "😚",
-            "😋",
-            "😝",
-            "🤑",
-            "🫣",
-            "🤫",
-            "🤔",
-            "🫡",
-            "😏",
-            "🥳",
-            "😎",
-            "😲",
-            "😮",
-            "😳",
-            "🥺",
-            "🥹",
-            "😻",
-            "🙊",
-            "💖",
-            "❤️‍🔥",
-            "💯",
-            "🐶",
-            "🐺",
-            "🐱",
-            "🐭",
-            "🐹",
-            "🐰",
-            "🐸",
-            "🐯",
-            "🐨",
-            "🐻",
-            "🐷",
-            "🐽",
-            "🐮",
-            "🐗",
-            "🐵",
-            "🐒",
-            "🐴",
-            "🐑",
-            "🐘",
-            "🐼",
-            "🐧",
-            "🐦",
-            "🐤",
-            "🐥",
-            "🐣",
-            "🐔",
-        ]
-        var random = emojis[Math.floor(Math.random()* emojis.length)];
-        console.log(random)
-        var hashTag = "\n#TikTokLite #ポイ活 #副業 #稼げる #TikTok";
-        var link = "\n" + process.env.HATENA_URL;
-        var tweet = text + random + hashTag + link;
-        console.log(tweet)
-        client.v2.tweet(tweet); 
+        execute(process.env.TIKTOK_5000_API_URL);
     } catch (err) {
         console.log(err);
     }
     res.send('get');
 });
 
-app.get("/tweet", (req, res) => {
+app.get("/amazon", (req, res) => {
     try {
-        greet();
+        execute(process.env.AMAZON_API_URL);
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/rakuten", (req, res) => {
+    try {
+        execute(process.env.RAKUTEN_API_URL);
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/moppy", (req, res) => {
+    try {
+        execute(process.env.MOPPY_API_URL);
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/mercari", (req, res) => {
+    try {
+        execute(process.env.MERCARI_API_URL);
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/daiwa", (req, res) => {
+    try {
+        execute(process.env.DAIWA_API_URL);
+    } catch (err) {
+        console.log(err);
+    }
+    res.send('get');
+});
+
+app.get("/olive", (req, res) => {
+    try {
+        execute(process.env.OLIVE_API_URL);
     } catch (err) {
         console.log(err);
     }
